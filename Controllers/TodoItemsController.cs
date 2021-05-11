@@ -9,7 +9,7 @@ using Todo.Crud.Models;
 namespace Todo.Crud.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TodoItemsController : ControllerBase
     {
         private readonly ILogger<TodoItemsController> _logger;
@@ -28,12 +28,11 @@ namespace Todo.Crud.Controllers
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.ID }, todoItem);
+            return CreatedAtAction("GetTodoItem", new { id = todoItem.ID }, todoItem);
         }
 
         // GET: api/TodoItems/5
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -42,7 +41,6 @@ namespace Todo.Crud.Controllers
             {
                 return NotFound();
             }
-
             return todoItem;
         }
     }

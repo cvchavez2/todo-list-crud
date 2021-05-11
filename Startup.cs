@@ -27,6 +27,11 @@ namespace Todo.Crud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+              options.AddDefaultPolicy(options => {
+                options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+              });
+            });
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
         }
@@ -39,11 +44,13 @@ namespace Todo.Crud
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors();
+
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
